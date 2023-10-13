@@ -10,23 +10,37 @@ from langchain.chains import ConversationalRetrievalChain
 from htmlTemplates import css, bot_template, user_template
 from langchain.llms import HuggingFaceHub
 
+# Defining a function named 'get_pdf_text' that takes a list of 'pdf_docs' as an input.
 def get_pdf_text(pdf_docs):
+    # Initialized an empty string 'text' that stores the extracted text.
     text = ""
+     # For loop to iterate through the list of 'pdf_docs'.
     for pdf in pdf_docs:
+         # Create a PdfReader object for the current PDF document.
         pdf_reader = PdfReader(pdf)
+        # For loop to iterate through the pages of the PDF document.
         for page in pdf_reader.pages:
+             # Extract the text from the current page and append it to the 'text' string.
             text += page.extract_text()
+            # Return the concatenated 'text' from all the PDF documents.
     return text
 
-
+# Defing a function named 'get_text_chunks' that takes a 'text' as an input.
 def get_text_chunks(text):
+    # Created an instance of 'CharacterTextSplitter' and configured it.
     text_splitter = CharacterTextSplitter(
-        separator="\n",
+         # This splits the text at the line breaks.
+        separator="\n", 
+         # Create chunks up to 1000 characters.
         chunk_size=1000,
+         # Allows an overlap of 200 characters between chunks.
         chunk_overlap=200,
-        length_function=len
+         # Created an instance 'len' where the function is used to calculate the length of text.
+        length_function=len 
     )
+     # Use the 'split_text' method of 'text_splitter' to split the input 'text' into chunks.
     chunks = text_splitter.split_text(text)
+    # Return the list of 'chunks'.
     return chunks
 
 
